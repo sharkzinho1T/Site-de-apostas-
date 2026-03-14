@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Bet - Apostas Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #0a1a2b;
+            color: white;
+        }
+        
+        /* CABEÇALHO */
+        .header {
+            background: #0f2b3f;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #00ff88;
+            box-shadow: 0 2px 10px rgba(0,255,136,0.2);
+        }
+        
+        .header h1 {
+            color: #00ff88;
+            font-size: 28px;
+            text-shadow: 0 0 10px rgba(0,255,136,0.5);
+        }
+        
+        .header p {
+            color: #ccc;
+            margin-top: 5px;
+        }
+        
+        /* BANNER PRINCIPAL */
+        .banner {
+            background: linear-gradient(135deg, #1a4b6d, #0f2b3f);
+            margin: 20px;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            border: 1px solid #00ff8833;
+        }
+        
+        .banner h2 {
+            color: #00ff88;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .banner p {
+            font-size: 16px;
+            color: #ddd;
+        }
+        
+        .btn-bonus {
+            background: #00ff88;
+            color: #0a1a2b;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 20px #00ff88;
+            transition: all 0.3s;
+        }
+        
+        .btn-bonus:active {
+            transform: scale(0.95);
+        }
+        
+        /* SEÇÃO DE JOGOS */
+        .secao-jogos {
+            padding: 20px;
+        }
+        
+        .secao-titulo {
+            color: #00ff88;
+            margin: 20px 0 15px 10px;
+            font-size: 22px;
+            border-left: 5px solid #00ff88;
+            padding-left: 15px;
+        }
+        
+        .grade-jogos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .card-jogo {
+            background: #162b3a;
+            width: 47%;
+            border-radius: 12px;
+            padding: 20px 10px;
+            text-align: center;
+            border: 1px solid #00ff884d;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: 0.2s;
+        }
+        
+        .card-jogo:active {
+            background: #1d3546;
+        }
+        
+        .card-jogo h3 {
+            color: #00ff88;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .card-jogo .icone {
+            font-size: 40px;
+            margin: 5px 0;
+        }
+        
+        .card-jogo .odd {
+            background: #0f2b3f;
+            padding: 8px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #00ff88;
+            border: 1px solid #00ff8833;
+        }
+        
+        /* ÁREA DO JOGO CRASH (Dinâmico) */
+        .area-crash {
+            background: #0f2b3f;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #00ff88;
+        }
+        
+        .multiplicador {
+            font-size: 48px;
+            font-weight: bold;
+            color: #00ff88;
+            text-shadow: 0 0 15px #00ff88;
+            margin: 15px 0;
+        }
+        
+        .btn-apostar {
+            background: linear-gradient(45deg, #00ff88, #00cc66);
+            color: #0a1a2b;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+            width: 100%;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        
+        .btn-apostar:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .valor-aposta {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #162b3a;
+            border: 1px solid #00ff88;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        /* RODAPÉ */
+        .footer {
+            background: #0f2b3f;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 2px solid #00ff88;
+            font-size: 12px;
+            color: #888;
+        }
+        
+        /* SALDO DO JOGADOR */
+        .saldo {
+            background: #162b3a;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 10px 0;
+            border: 1px solid #00ff88;
+            font-weight: bold;
+        }
+        
+        .saldo span {
+            color: #00ff88;
+            font-size: 20px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏆 MINHA BET</h1>
+        <p>A casa do seu esporte favorito</p>
+    </div>
+    
+    <div style="text-align: center;">
+        <div class="saldo">
+            Saldo: <span id="saldoJogador">1000.00</span>
+        </div>
+    </div>
+    
+    <div class="banner">
+        <h2>BÔNUS DE 100%</h2>
+        <p>ATÉ R$500 NO PRIMEIRO DEPÓSITO</p>
+        <button class="btn-bonus" onclick="alert('Em desenvolvimento real, isso abriria depósito')">DEPOSITAR</button>
+    </div>
+    
+    <!-- JOGO CRASH AO VIVO -->
+    <div class="area-crash">
+        <h3 style="color: #00ff88;">🎮 JOGO CRASH</h3>
+        <div class="multiplicador" id="multiplicador">1.00x</div>
+        
+        <input type="number" id="valorAposta" class="valor-aposta" placeholder="Valor da aposta" value="10" min="1">
+        <button class="btn-apostar" id="btnApostar" onclick="iniciarJogo()">APOSTAR</button>
+        <button class="btn-apostar" id="btnParar" style="background: #e94560; display: none;" onclick="pararJogo()">RETIRAR</button>
+        
+        <p id="statusJogo" style="color: #ccc; margin-top: 10px;">Clique em APOSTAR para começar</p>
+    </div>
+    
+    <div class="secao-jogos">
+        <h2 class="secao-titulo">⚽ ESPORTES</h2>
+        <div class="grade-jogos">
+            <div class="card-jogo" onclick="alert('Jogo em desenvolvimento')">
+                <div class="icone">⚽</div>
+                <h3>Futebol</h3>
+                <p>Brasileirão</p>
+                <div class="odd">ODD: 2.10</div>
+            </div>
+            <div class="card-jogo" onclick="alert('Jogo em desenvolvimento')">
+                <div class="icone">🏀</div>
+                <h3>Basquete</h3>
+                <p>NBA</p>
+                <div class="odd">ODD: 1.95</div>
+            </div>
+        </div>
+        
+        <h2 class="secao-titulo">🎰 CASSINO</h2>
+        <div class="grade-jogos">
+            <div class="card-jogo" onclick="alert('Jogo em desenvolvimento')">
+                <div class="icone">🎰</div>
+                <h3>Slots</h3>
+                <p>Jackpot</p>
+                <div class="odd">RTP 97%</div>
+            </div>
+            <div class="card-jogo" onclick="alert('Jogo em desenvolvimento')">
+                <div class="icone">🎲</div>
+                <h3>Roleta</h3>
+                <p>Ao vivo</p>
+                <div class="odd">RTP 95%</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>⚠️ Jogue com responsabilidade | Proibido para menores de 18 anos</p>
+        <p>© 2024 Minha Bet - Site de demonstração</p>
+        <p style="margin-top: 10px;">🔧 <a href="admin.html" style="color: #00ff88;">Área do Admin</a> (acesso restrito)</p>
+    </div>
+    
+    <script>
+        // ============================================
+        // SISTEMA DO JOGO CRASH (Controlado pelo Admin)
+        // ============================================
+        
+        // Configurações que podem ser alteradas pelo admin
+        let CONFIG = {
+            rtp_global: 95,        // 95% = casa fica com 5%
+            variancia: 'media',     // 'baixa', 'media', 'alta'
+            crash_maximo: 100,
+            probabilidade_crash_cedo: 70  // %
+        };
+        
+        // Estado do jogo
+        let jogoAtivo = false;
+        let apostaAtual = 0;
+        let multiplicadorAtual = 1.0;
+        let intervaloJogo;
+        let saldo = 1000.00;
+        
+        // Elementos da tela
+        const saldoEl = document.getElementById('saldoJogador');
+        const multiplicadorEl = document.getElementById('multiplicador');
+        const btnApostar = document.getElementById('btnApostar');
+        const btnParar = document.getElementById('btnParar');
+        const valorAposta = document.getElementById('valorAposta');
+        const statusJogo = document.getElementById('statusJogo');
+        
+        // Atualiza saldo na tela
+        function atualizarSaldo() {
+            saldoEl.textContent = saldo.toFixed(2);
+        }
+        
+        // ============================================
+        // NÚCLEO DO ALGORITMO (Controlado pelo RTP)
+        // ============================================
+        function calcularSeVaiCrashar() {
+            // Gera número aleatório de 0 a 100
+            const sorteio = Math.random() * 100;
+            
+            // Se o sorteio for menor que a probabilidade de crash, perdeu
+            // Quanto maior o RTP, menor a chance de crash precoce
+            const probabilidadeAjustada = CONFIG.probabilidade_crash_cedo * (1 - (CONFIG.rtp_global / 200));
+            
+            if (sorteio < probabilidadeAjustada) {
+                return true; // Crashou (jogador perde)
+            } else {
+                return false; // Não crashou (jogador pode ganhar)
+            }
+        }
+        
+        function calcularMultiplicadorMaximo() {
+            // Quanto maior o RTP, maior o multiplicador médio
+            const base = CONFIG.rtp_global / 10;
+            
+            // Ajusta pela variância
+            switch(CONFIG.variancia) {
+                case 'baixa':
+                    return base + (Math.random() * 2);  // 9-11x
+                case 'alta':
+                    return base + (Math.random() * 20); // 9-29x
+                default: // média
+                    return base + (Math.random() * 5);  // 9-14x
+            }
+        }
+        
+        // ============================================
+        // CONTROLE DO JOGO
+        // ============================================
+        function iniciarJogo() {
+            if (jogoAtivo) return;
+            
+            const aposta = parseFloat(valorAposta.value);
+            
+            // Validações
+            if (aposta <= 0) {
+                alert('Valor inválido!');
+                return;
+            }
+            
+            if (aposta > saldo) {
+                alert('Saldo insuficiente!');
+                return;
+            }
+            
+            // Debita a aposta
+            saldo -= aposta;
+            apostaAtual = aposta;
+            atualizarSaldo();
+            
+            // Prepara o jogo
+            jogoAtivo = true;
+            multiplicadorAtual = 1.0;
+            multiplicadorEl.textContent = multiplicadorAtual.toFixed(2) + 'x';
+            
+            // Troca botões
+            btnApostar.style.display = 'none';
+            btnParar.style.display = 'block';
+            statusJogo.textContent = '⚡ Jogo em andamento...';
+            
+            // Decide se essa rodada vai crashar
+            const vaiCrashar = calcularSeVaiCrashar();
+            const multiplicadorMaximo = vaiCrashar ? 
+                (1.0 + Math.random() * 1.5) : // Crash rápido (1.0x a 2.5x)
+                calcularMultiplicadorMaximo();  // Pode ir longe
+            
+            // Loop do jogo (aumenta multiplicador)
+            let tempo = 0;
+            intervaloJogo = setInterval(() => {
+                tempo += 0.1;
+                
+                // Aumenta multiplicador (crescimento acelerado)
+                multiplicadorAtual = Math.pow(1.2, tempo);
+                
+                // Verifica se crashou
+                if (multiplicadorAtual >= multiplicadorMaximo) {
+                    // CRASHOU!
+                    clearInterval(intervaloJogo);
+                    multiplicadorEl.textContent = '💥 CRASH!';
+                    statusJogo.textContent = '❌ Você perdeu R$ ' + apostaAtual.toFixed(2);
+                    
+                    // Fim do jogo
+                    jogoAtivo = false;
+                    btnApostar.style.display = 'block';
+                    btnParar.style.display = 'none';
+                    
+                    // Registra para o admin
+                    registrarResultado(false, apostaAtual, multiplicadorAtual);
+                    
+                } else {
+                    // Ainda vivo
+                    multiplicadorEl.textContent = multiplicadorAtual.toFixed(2) + 'x';
+                }
+            }, 200); // Atualiza a cada 200ms
+        }
+        
+        function pararJogo() {
+            if (!jogoAtivo) return;
+            
+            // Para o jogo
+            clearInterval(intervaloJogo);
+            
+            // Calcula prêmio
+            const premio = apostaAtual * multiplicadorAtual;
+            saldo += premio;
+            atualizarSaldo();
+            
+            // Feedback
+            multiplicadorEl.textContent = '✅ RETIRADO!';
+            statusJogo.textContent = '🎉 Você ganhou R$ ' + premio.toFixed(2);
+            
+            // Registra para o admin
+            registrarResultado(true, apostaAtual, multiplicadorAtual);
+            
+            // Fim do jogo
+            jogoAtivo = false;
+            btnApostar.style.display = 'block';
+            btnParar.style.display = 'none';
+        }
+        
+        // ============================================
+        // ESTATÍSTICAS PARA O ADMIN
+        // ============================================
+        let estatisticas = {
+            totalApostado: 0,
+            totalPago: 0,
+            historico: []
+        };
+        
+        function registrarResultado(ganhou, aposta, mult) {
+            const premio = ganhou ? aposta * mult : 0;
+            
+            estatisticas.totalApostado += aposta;
+            estatisticas.totalPago += premio;
+            
+            estatisticas.historico.push({
+                data: new Date(),
+                ganhou: ganhou,
+                aposta: aposta,
+                multiplicador: mult,
+                premio: premio
+            });
+            
+            // Salva para o admin ver (via localStorage)
+            localStorage.setItem('estatisticas_cassino', JSON.stringify(estatisticas));
+            
+            // Calcula RTP atual
+            const rtpAtual = (estatisticas.totalPago / estatisticas.totalApostado) * 100;
+            console.log('RTP Atual:', rtpAtual.toFixed(2) + '%', 'Configurado:', CONFIG.rtp_global + '%');
+        }
+        
+        // ============================================
+        // CARREGAR CONFIGURAÇÕES DO ADMIN
+        // ============================================
+        function carregarConfigAdmin() {
+            const configSalva = localStorage.getItem('config_cassino');
+            if (configSalva) {
+                try {
+                    CONFIG = JSON.parse(configSalva);
+                    console.log('Configurações do admin carregadas:', CONFIG);
+                } catch (e) {
+                    console.log('Usando configurações padrão');
+                }
+            }
+        }
+        
+        // Carrega configurações ao iniciar
+        carregarConfigAdmin();
+        
+        // Verifica configurações a cada 5 segundos
+        setInterval(carregarConfigAdmin, 5000);
+    </script>
+</body>
+  </html>
