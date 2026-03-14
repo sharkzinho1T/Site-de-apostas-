@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Controle da Casa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: #0a1a2b;
+            color: white;
+            padding: 15px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #e94560;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 28px;
+            text-shadow: 0 0 10px #e94560;
+        }
+        
+        .card {
+            background: #162b3a;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #00ff884d;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        
+        .card h2 {
+            color: #00ff88;
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-left: 4px solid #00ff88;
+            padding-left: 10px;
+        }
+        
+        .card h3 {
+            color: #e94560;
+            margin: 20px 0 10px;
+            font-size: 18px;
+        }
+        
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            background: #0f2b3f;
+            border: 1px solid #00ff884d;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+        
+        button {
+            background: #00ff88;
+            color: #0a1a2b;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            width: 100%;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:active {
+            transform: scale(0.98);
+            background: #00cc66;
+        }
+        
+        .btn-perigo {
+            background: #e94560;
+            color: white;
+        }
+        
+        .aviso {
+            background: #e9456020;
+            border-left: 4px solid #e94560;
+            padding: 15px;
+            margin: 20px 0;
+            color: #e94560;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        
+        .estatistica {
+            background: #0f2b3f;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #00ff8833;
+        }
+        
+        .estatistica .label {
+            color: #aaa;
+        }
+        
+        .estatistica .valor {
+            color: #00ff88;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .historico-item {
+            background: #0f2b3f;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            font-size: 12px;
+            color: #ccc;
+            border-left: 3px solid #00ff88;
+        }
+        
+        .senha-container {
+            position: relative;
+        }
+        
+        .senha-container input {
+            padding-right: 50px;
+        }
+        
+        .toggle-senha {
+            position: absolute;
+            right: 10px;
+            top: 38px;
+            color: #00ff88;
+            background: none;
+            border: none;
+            font-size: 14px;
+            padding: 0;
+            width: auto;
+            margin: 0;
+        }
+        
+        .link-site {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #00ff8810;
+            border-radius: 10px;
+        }
+        
+        .link-site a {
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👑 PAINEL DO ADMINISTRADOR</h1>
+        
+        <div class="link-site">
+            <a href="index.html" target="_blank">🔗 VISITAR SITE DO JOGADOR</a>
+        </div>
+        
+        <div class="aviso">
+            ⚠️ ÁREA RESTRITA - Alterações afetam TODOS os jogadores em tempo real
+        </div>
+        
+        <!-- CARD DE ESTATÍSTICAS -->
+        <div class="card">
+            <h2>📊 ESTATÍSTICAS DA CASA</h2>
+            
+            <div class="estatistica">
+                <span class="label">Total Apostado:</span>
+                <span class="valor" id="totalApostado">R$ 0,00</span>
+            </div>
+            
+            <div class="estatistica">
+                <span class="label">Total Pago:</span>
+                <span class="valor" id="totalPago">R$ 0,00</span>
+            </div>
+            
+            <div class="estatistica">
+                <span class="label">Lucro da Casa:</span>
+                <span class="valor" id="lucroCasa">R$ 0,00</span>
+            </div>
+            
+            <div class="estatistica">
+                <span class="label">RTP Atual (Real):</span>
+                <span class="valor" id="rtpReal">0%</span>
+            </div>
+            
+            <div class="estatistica">
+                <span class="label">RTP Configurado:</span>
+                <span class="valor" id="rtpConfig">95%</span>
+            </div>
+            
+            <div class="estatistica">
+                <span class="label">Total de Jogadas:</span>
+                <span class="valor" id="totalJogadas">0</span>
+            </div>
+        </div>
+        
+        <!-- CARD DE CONTROLE DO RTP -->
+        <div class="card">
+            <h2>🎯 CONTROLE DA CASA (RTP)</h2>
+            
+            <label>💰 RTP Global (%)</label>
+            <input type="number" id="rtpGlobal" min="1" max="99" value="95" step="1">
+            <p style="color: #aaa; font-size: 12px; margin-top: 5px;">
+                ⬆️ Quanto maior: jogador ganha mais (casa lucra menos)<br>
+                ⬇️ Quanto menor: jogador perde mais (casa lucra mais)
+            </p>
+            
+            <label>📈 Variância do Jogo</label>
+            <select id="variancia">
+                <option value="baixa">Baixa - Ganhos frequentes e baixos</option>
+                <option value="media" selected>Média - Equilibrado</option>
+                <option value="alta">Alta - Ganhos raros mas altos</option>
+            </select>
+            
+            <label>🎲 Chance de Crash Precoce (%)</label>
+            <input type="number" id="crashPrecoce" min="10" max="90" value="70" step="5">
+            <p style="color: #aaa; font-size: 12px;">Quanto maior, mais vezes o jogo vai crashar rápido</p>
+            
+            <label>📊 Multiplicador Máximo</label>
+            <input type="number" id="multiplicadorMax" min="10" max="1000" value="100">
+        </div>
+        
+        <!-- CARD DE SEGURANÇA -->
+        <div class="card">
+            <h2>🔐 SEGURANÇA</h2>
+            
+            <div class="senha-container">
+                <label>Senha do Admin</label>
+                <input type="password" id="senhaAdmin" value="admin123">
+                <button class="toggle-senha" onclick="toggleSenha()">👁️</button>
+            </div>
+            
+            <button onclick="salvarConfiguracoes()">💾 SALVAR ALTERAÇÕES</button>
+            <button class="btn-perigo" onclick="resetarEstatisticas()">⚠️ ZERAR ESTATÍSTICAS</button>
+        </div>
+        
+        <!-- CARD DE HISTÓRICO -->
+        <div class="card">
+            <h2>📜 ÚLTIMAS ALTERAÇÕES</h2>
+            <div id="historico" style="max-height: 200px; overflow-y: auto;">
+                <div class="historico-item">Nenhuma alteração ainda</div>
+            </div>
+        </div>
+        
+        <!-- CARD DE AJUDA -->
+        <div class="card">
+            <h2>❓ ENTENDENDO O RTP</h2>
+            <p style="color: #ccc; margin: 10px 0;">
+                <strong>RTP 95%</strong> = A cada R$100 apostados, o jogador recebe R$95 de volta (em média).<br>
+                <strong>Casa fica com 5%</strong> = Lucro garantido a longo prazo.
+            </p>
+            <p style="color: #ffaa00; margin-top: 15px;">
+                💡 DICA: Comece com RTP 95% e ajuste conforme seu lucro desejado.
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // ============================================
+        // CARREGAR ESTATÍSTICAS DO JOGO
+        // ============================================
+        function carregarEstatisticas() {
+            const dados = localStorage.getItem('estatisticas_cassino');
+            if (dados) {
+                try {
+                    const stats = JSON.parse(dados);
+                    
+                    // Atualiza tela
+                    document.getElementById('totalApostado').textContent = 'R$ ' + stats.totalApostado.toFixed(2);
+                    document.getElementById('totalPago').textContent = 'R$ ' + stats.totalPago.toFixed(2);
+                    
+                    const lucro = stats.totalApostado - stats.totalPago;
+                    document.getElementById('lucroCasa').textContent = 'R$ ' + lucro.toFixed(2);
+                    
+                    const rtp = stats.totalApostado > 0 ? (stats.totalPago / stats.totalApostado) * 100 : 0;
+                    document.getElementById('rtpReal').textContent = rtp.toFixed(2) + '%';
+                    
+                    document.getElementById('totalJogadas').textContent = stats.historico ? stats.historico.length : 0;
+                    
+                    // Carrega configuração atual
+                    const config = localStorage.getItem('config_cassino');
+                    if (config) {
+                        const conf = JSON.parse(config);
+                        document.getElementById('rtpConfig').textContent = conf.rtp_global + '%';
+                    }
+                    
+                } catch (e) {
+                    console.log('Erro ao carregar estatísticas');
+                }
+            }
+        }
+        
+        // ============================================
+        // CARREGAR CONFIGURAÇÕES NO FORMULÁRIO
+        // ============================================
+        function carregarConfigNoForm() {
+            const config = localStorage.getItem('config_cassino');
+            if (config) {
+                try {
+                    const conf = JSON.parse(config);
+                    document.getElementById('rtpGlobal').value = conf.rtp_global || 95;
+                    document.getElementById('variancia').value = conf.variancia || 'media';
+                    document.getElementById('crashPrecoce').value = conf.probabilidade_crash_cedo || 70;
+                    document.getElementById('multiplicadorMax').value = conf.crash_maximo || 100;
+                } catch (e) {}
+            }
+        }
+        
+        // ============================================
+        // SALVAR CONFIGURAÇÕES
+        // ============================================
+        function salvarConfiguracoes() {
+            const senha = document.getElementById('senhaAdmin').value;
+            
+            if (senha !== 'admin123') {
+                alert('❌ Senha incorreta!');
+                return;
+            }
+            
+            // Pega valores do formulário
+            const novaConfig = {
+                rtp_global: parseInt(document.getElementById('rtpGlobal').value),
+                variancia: document.getElementById('variancia').value,
+                probabilidade_crash_cedo: parseInt(document.getElementById('crashPrecoce').value),
+                crash_maximo: parseInt(document.getElementById('multiplicadorMax').value)
+            };
+            
+            // Salva no localStorage
+            localStorage.setItem('config_cassino', JSON.stringify(novaConfig));
+            
+            // Atualiza RTP config na tela
+            document.getElementById('rtpConfig').textContent = novaConfig.rtp_global + '%';
+            
+            // Registra no histórico
+            adicionarAoHistorico('RTP alterado para ' + novaConfig.rtp_global + '%');
+            
+            alert('✅ Configurações salvas! Os jogadores serão afetados imediatamente.');
+        }
+        
+        // ============================================
+        // RESETAR ESTATÍSTICAS
+        // ============================================
+        function resetarEstatisticas() {
+            if (confirm('Tem certeza? Isso vai zerar todo o histórico de apostas!')) {
+                localStorage.removeItem('estatisticas_cassino');
+                carregarEstatisticas();
+                adicionarAoHistorico('Estatísticas resetadas');
+                alert('Estatísticas zeradas!');
+            }
+        }
+        
+        // ============================================
+        // HISTÓRICO DE ALTERAÇÕES
+        // ============================================
+        function adicionarAoHistorico(texto) {
+            const historicoDiv = document.getElementById('historico');
+            const data = new Date();
+            const hora = data.getHours().toString().padStart(2,'0') + ':' + data.getMinutes().toString().padStart(2,'0');
+            
+            const item = document.createElement('div');
+            item.className = 'historico-item';
+            item.textContent = hora + ' - ' + texto;
+            
+            historicoDiv.insertBefore(item, historicoDiv.firstChild);
+            
+            // Salva histórico
+            const historicoSalvo = JSON.parse(localStorage.getItem('historico_admin') || '[]');
+            historicoSalvo.unshift(hora + ' - ' + texto);
+            if (historicoSalvo.length > 10) historicoSalvo.pop();
+            localStorage.setItem('historico_admin', JSON.stringify(historicoSalvo));
+        }
+        
+        // ============================================
+        // CARREGAR HISTÓRICO SALVO
+        // ============================================
+        function carregarHistorico() {
+            const historicoSalvo = JSON.parse(localStorage.getItem('historico_admin') || '[]');
+            const historicoDiv = document.getElementById('historico');
+            
+            if (historicoSalvo.length > 0) {
+                historicoDiv.innerHTML = '';
+                historicoSalvo.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'historico-item';
+                    div.textContent = item;
+                    historicoDiv.appendChild(div);
+                });
+            }
+        }
+        
+        // ============================================
+        // MOSTRAR/ESCONDER SENHA
+        // ============================================
+        function toggleSenha() {
+            const senhaInput = document.getElementById('senhaAdmin');
+            if (senhaInput.type === 'password') {
+                senhaInput.type = 'text';
+            } else {
+                senhaInput.type = 'password';
+            }
+        }
+        
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
+        // Atualiza estatísticas a cada 2 segundos
+        carregarEstatisticas();
+        carregarConfigNoForm();
+        carregarHistorico();
+        setInterval(carregarEstatisticas, 2000);
+    </script>
+</body>
+</html>
